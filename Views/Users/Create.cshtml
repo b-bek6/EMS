@@ -1,14 +1,14 @@
 @using Microsoft.AspNetCore.Identity;
-@model IEnumerable<IdentityUser>
+@model Employee_Management_System.ViewModels.UserViewModel;
 
 @{
-    ViewData["Title"] = "System User";
+    ViewData["Title"] = "Create";
 }
 
 
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Add New Leave Application </h3>
+        <h3 class="card-title"> New User Details </h3>
     </div>
     <div class="card-body">
         <div class="row">
@@ -18,70 +18,44 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="EmployeeId" class="control-label"></label>
-                                <select asp-for="EmployeeId" class="form-control"
-                                    asp-items="ViewBag.EmployeeId"></select>
+                                <label asp-for="Email" class="control-label"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="NoOfDays" class="control-label"></label>
-                                <input asp-for="NoOfDays" class="form-control" />
-                                <span asp-validation-for="NoOfDays" class="text-danger"></span>
+                                <label asp-for="PhoneNumber" class="control-label"></label>
+                                <input asp-for="PhoneNumber" class="form-control" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="StartDate" class="control-label"></label>
-                                <input asp-for="StartDate" class="form-control" />
-                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                                <label asp-for="UserName" class="control-label"></label>
+                                <input asp-for="UserName" class="form-control" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label asp-for="EndDate" class="control-label"></label>
-                                <input asp-for="EndDate" class="form-control" />
-                                <span asp-validation-for="EndDate" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="DurationId" class="control-label"></label>
-                                <select asp-for="DurationId" class="form-control"
-                                    asp-items="ViewBag.DurationId"></select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="LeaveTypeId" class="control-label"></label>
-                                <select asp-for="LeaveTypeId" class="form-control"
-                                    asp-items="ViewBag.LeaveTypeId"></select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="Attachment" class="control-label"></label>
-                                <input asp-for="Attachment" class="form-control" />
-                                <span asp-validation-for="Attachment" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label asp-for="Description" class="control-label"></label>
-                                <input asp-for="Description" class="form-control" />
-                                <span asp-validation-for="Description" class="text-danger"></span>
+                                <label asp-for="Password" class="control-label"></label>
+                                <input asp-for="Password" class="form-control" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Save Leave Application" class="btn btn-primary" />
+                            <div class="col-md-12">
+                                <div class="card-footer">
+                                    <div class="clearfix">
+                                        <a asp-action="Index" class="btn btn-danger push-left">Back to List</a>
+                                        <input type="submit" value="Register User" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
                 </form>
             </div>
-        </div>
-
-        <div>
-            <a asp-action="Index">Back to List</a>
         </div>
     </div>
 </div>
