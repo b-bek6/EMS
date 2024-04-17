@@ -22,6 +22,7 @@ namespace Employee_Management_System.Controllers
         // GET: LeaveApplications
         public async Task<IActionResult> Index()
         {
+            // add awaiting status table in only index html
             var applicationDbContext = _context.LeaveApplications.Include(l => l.Duration).Include(l => l.Employee).Include(l => l.LeaveType).Include(l => l.Status);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -132,6 +133,7 @@ namespace Employee_Management_System.Controllers
             leaveApplication.ApprovedOn = DateTime.Now;
             leaveApplication.ApprovedById = "Bibek Ghimire";
             leaveApplication.StatusId = approvedStatus.Id;
+            leaveApplication.ApprovalNotes = leave.ApprovalNotes;
             _context.Update(leaveApplication);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -161,7 +163,8 @@ namespace Employee_Management_System.Controllers
 
             leaveApplication.ApprovedOn = DateTime.Now;
             leaveApplication.ApprovedById = "Bibek Ghimire";
-            leaveApplication.StatusId = rejectStatus.Id;
+            leaveApplication.StatusId = rejectStatus!.Id;
+            leaveApplication.ApprovalNotes = leave.ApprovalNotes;
             _context.Update(leaveApplication);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
