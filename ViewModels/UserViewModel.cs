@@ -1,4 +1,4 @@
-﻿namespace Employee_Management_System.ViewModels;
+﻿namespace Employee_Management_System;
 
 public class UserViewModel
 {
@@ -7,7 +7,7 @@ public class UserViewModel
     public string FirstName { get; set; }
     public string MiddleName { get; set; }  
     public string LastName { get; set; }
-    public int PhoneNumber { get; set; }
+    public string PhoneNumber { get; set; }
     public string Password { get; set; }
     public string Address { get; set; }
     public string UserName { get; set; }

@@ -5,7 +5,7 @@
 namespace Employee_Management_System.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class errorleaveApplication : Migration
+    public partial class checkmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -1,5 +1,5 @@
-@using Microsoft.AspNetCore.Identity;
-@model Employee_Management_System.ViewModels.UserViewModel;
+@* @using Microsoft.AspNetCore.Identity; *@
+@model Employee_Management_System.UserViewModel;
 
 @{
     ViewData["Title"] = "Create";
@@ -26,7 +26,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="PhoneNumber" class="control-label"></label>
-                                <input asp-for="PhoneNumber" class="form-control" />
+                                <input type="Number" asp-for="PhoneNumber" class="form-control" />
                                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             </div>
                         </div>
