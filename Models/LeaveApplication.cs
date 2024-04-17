@@ -26,4 +26,7 @@ public class LeaveApplication : ApprovalAcitvity
     [Display(Name="Status")] 
     public int StatusId { get; set; }
     public SystemCodeDetail Status { get; set; }
+    [Display(Name="Approval Notes")]
+    public string? ApprovalNotes {get; set; }
+
 }
