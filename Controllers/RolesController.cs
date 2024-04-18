@@ -62,7 +62,7 @@ public class RolesController : Controller
     [HttpPost]
     public async Task<ActionResult> Edit(string id, RolesViewModel model)
     {
-        var checkifexist = await _roleManager.RoleExistAsync(model.RoleName);
+        var checkifexist = await _roleManager.RoleExistsAsync(model.RoleName);
         if (!checkifexist)
         {
             var result = await _roleManager.FindByIdAsync(id);
