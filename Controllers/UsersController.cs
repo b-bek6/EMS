@@ -9,11 +9,11 @@ namespace Employee_Management_System.Controllers;
 [Authorize]
 public class UsersController : Controller
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<ApplicationUser> _userManager;
     public readonly RoleManager<IdentityRole> _roleManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ApplicationDbContext _context;
-    public UsersController(ApplicationDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<IdentityUser> signInManager)
+    public UsersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager)
     {
         _roleManager = roleManager;
         _userManager = userManager;
@@ -35,7 +35,7 @@ public class UsersController : Controller
     [HttpPost]
     public async Task<ActionResult> Create(UserViewModel model)
     {
-        IdentityUser user = new IdentityUser();
+        ApplicationUser user = new ApplicationUser();
         user.UserName = model.UserName;
         user.NormalizedEmail = model.UserName;
         user.Email = model.Email;
