@@ -1,7 +1,7 @@
 @*
 *@
 @using Microsoft.AspNetCore.Identity;
-@model IEnumerable<IdentityUser>
+@model IEnumerable<ApplicationUser>
 
 @{
     ViewData["Title"] = "System Users";
@@ -19,16 +19,19 @@
             <thead>
                 <tr>
                     <th>
-                        User Serial No
+                       Full Name
                     </th>
                     <th>
-                       User Email
+                       Email
                     </th>
                     <th>
-                        User Name
-                    </th> 
+                       IDNo
+                    </th>
                     <th>
-                        User Phone No
+                        Role
+                    </th>
+                    <th>
+                        Phone No
                     </th>
                     <th>Action</th>
 
@@ -39,13 +42,16 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Id)
+                            @Html.DisplayFor(modelItem => item.FullName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.NormalizedEmail)
+                            @Html.DisplayFor(modelItem => item.Email)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.NormalizedUserName)
+                            @Html.DisplayFor(modelItem => item.NationalId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Role.Name)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.PhoneNumber)

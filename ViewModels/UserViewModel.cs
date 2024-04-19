@@ -1,22 +1,30 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Employee_Management_System;
 
 public class UserViewModel
 {
     public int Id { get; set; }
+    [DisplayName("Email Address")]
     public string Email { get; set; }
+    [DisplayName("First Name")]
     public string FirstName { get; set; }
+    [DisplayName("Middle Name")]
     public string MiddleName { get; set; }  
+    [DisplayName("Last Name")]
     public string LastName { get; set; }
+    [DisplayName("Phone Number")]
     public string PhoneNumber { get; set; }
-    [Required]
-    [StringLength(1000, ErrorMessage ="The {0} must be at least {2} characters long.", MinimumLength = 6)]
-    [DataType(DataType.Password)]
+    [DisplayName("Password")]
     public string Password { get; set; }
+    [DisplayName("Address")]
     public string Address { get; set; }
+    [DisplayName("User Name")]
     public string UserName { get; set; }
+    [DisplayName("National ID")]
     public string? NationalId { get; set; }
     public string? FullName  => $"{FirstName} {MiddleName} {LastName}";
+    [DisplayName("User Role")]
     public string? RoleId { get; set; }
 }

@@ -8,25 +8,25 @@ using Microsoft.EntityFrameworkCore;
 using Employee_Management_System;
 using Employee_Management_System.Data;
 
-namespace Employee_Management_System.Controllers
+namespace EmployeeManagementSystem.Controllers
 {
-    public class CitiesController : Controller
+    public class SystemProfilesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CitiesController(ApplicationDbContext context)
+        public SystemProfilesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Cities
+        // GET: SystemProfiles
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext =await _context.Cities.Include(c => c.Country).ToListAsync();
-            return View(applicationDbContext);
+            var applicationDbContext = _context.SystemProfiles.Include(s => s.Profile);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Cities/Details/5
+        // GET: SystemProfiles/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +34,42 @@ namespace Employee_Management_System.Controllers
                 return NotFound();
             }
 
-            var city = await _context.Cities
-                .Include(c => c.Country)
+            var systemProfile = await _context.SystemProfiles
+                .Include(s => s.Profile)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (city == null)
+            if (systemProfile == null)
             {
                 return NotFound();
             }
 
-            return View(city);
+            return View(systemProfile);
         }
 
-        // GET: Cities/Create
+        // GET: SystemProfiles/Create
         public IActionResult Create()
         {
-            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Id");
+            ViewData["ProfileId"] = new SelectList(_context.SystemProfiles, "Id", "Id");
             return View();
         }
 
-        // POST: Cities/Create
+        // POST: SystemProfiles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Code,Name,CountryId")] City city)
+        public async Task<IActionResult> Create([Bind("Id,Name,ProfileId,Order,CreatedById,CreatedOn,ModifiedById,ModifiedOn")] SystemProfile systemProfile)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(city);
+                _context.Add(systemProfile);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Id", city.CountryId);
-            return View(city);
+            ViewData["ProfileId"] = new SelectList(_context.SystemProfiles, "Id", "Id", systemProfile.ProfileId);
+            return View(systemProfile);
         }
 
-        // GET: Cities/Edit/5
+        // GET: SystemProfiles/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +77,23 @@ namespace Employee_Management_System.Controllers
                 return NotFound();
             }
 
-            var city = await _context.Cities.FindAsync(id);
-            if (city == null)
+            var systemProfile = await _context.SystemProfiles.FindAsync(id);
+            if (systemProfile == null)
             {
                 return NotFound();
             }
-            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Id", city.CountryId);
-            return View(city);
+            ViewData["ProfileId"] = new SelectList(_context.SystemProfiles, "Id", "Id", systemProfile.ProfileId);
+            return View(systemProfile);
         }
 
-        // POST: Cities/Edit/5
+        // POST: SystemProfiles/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Code,Name,CountryId")] City city)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ProfileId,Order,CreatedById,CreatedOn,ModifiedById,ModifiedOn")] SystemProfile systemProfile)
         {
-            if (id != city.Id)
+            if (id != systemProfile.Id)
             {
                 return NotFound();
             }
@@ -102,12 +102,12 @@ namespace Employee_Management_System.Controllers
             {
                 try
                 {
-                    _context.Update(city);
+                    _context.Update(systemProfile);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CityExists(city.Id))
+                    if (!SystemProfileExists(systemProfile.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +118,11 @@ namespace Employee_Management_System.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Id", city.CountryId);
-            return View(city);
+            ViewData["ProfileId"] = new SelectList(_context.SystemProfiles, "Id", "Id", systemProfile.ProfileId);
+            return View(systemProfile);
         }
 
-        // GET: Cities/Delete/5
+        // GET: SystemProfiles/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,35 +130,35 @@ namespace Employee_Management_System.Controllers
                 return NotFound();
             }
 
-            var city = await _context.Cities
-                .Include(c => c.Country)
+            var systemProfile = await _context.SystemProfiles
+                .Include(s => s.Profile)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (city == null)
+            if (systemProfile == null)
             {
                 return NotFound();
             }
 
-            return View(city);
+            return View(systemProfile);
         }
 
-        // POST: Cities/Delete/5
+        // POST: SystemProfiles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var city = await _context.Cities.FindAsync(id);
-            if (city != null)
+            var systemProfile = await _context.SystemProfiles.FindAsync(id);
+            if (systemProfile != null)
             {
-                _context.Cities.Remove(city);
+                _context.SystemProfiles.Remove(systemProfile);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CityExists(int id)
+        private bool SystemProfileExists(int id)
         {
-            return _context.Cities.Any(e => e.Id == id);
+            return _context.SystemProfiles.Any(e => e.Id == id);
         }
     }
 }
