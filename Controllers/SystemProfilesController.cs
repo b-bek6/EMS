@@ -48,7 +48,7 @@ namespace EmployeeManagementSystem.Controllers
         // GET: SystemProfiles/Create
         public IActionResult Create()
         {
-            ViewData["ProfileId"] = new SelectList(_context.SystemProfiles, "Id", "Id");
+            ViewData["ProfileId"] = new SelectList(_context.SystemProfiles, "Id", "Name");
             return View();
         }
 
@@ -57,14 +57,16 @@ namespace EmployeeManagementSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ProfileId,Order,CreatedById,CreatedOn,ModifiedById,ModifiedOn")] SystemProfile systemProfile)
+        public async Task<IActionResult> Create(SystemProfile systemProfile)
         {
-            if (ModelState.IsValid)
-            {
+            // if (ModelState.IsValid)
+            // {
+                systemProfile.CreatedById = "Bibek Ghimire";
+                systemProfile.CreatedOn = DateTime.Now;
                 _context.Add(systemProfile);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
+            // }
             ViewData["ProfileId"] = new SelectList(_context.SystemProfiles, "Id", "Id", systemProfile.ProfileId);
             return View(systemProfile);
         }
@@ -98,8 +100,8 @@ namespace EmployeeManagementSystem.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+            // if (ModelState.IsValid)
+            // {
                 try
                 {
                     _context.Update(systemProfile);
@@ -117,7 +119,7 @@ namespace EmployeeManagementSystem.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
+            // }
             ViewData["ProfileId"] = new SelectList(_context.SystemProfiles, "Id", "Id", systemProfile.ProfileId);
             return View(systemProfile);
         }
