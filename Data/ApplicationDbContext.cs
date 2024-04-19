@@ -13,7 +13,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e=>e.GetForeignKeys()))
+        foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
         {
             relationship.DeleteBehavior = DeleteBehavior.Restrict;
         }
@@ -23,12 +23,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .HasForeignKey(f => f.StatusId)
             .OnDelete(DeleteBehavior.Cascade);
     }
-    
+
     public DbSet<Employee> Employees { get; set; }
-    public DbSet<Department> Departments {get; set; }
-    public DbSet<Designation> Designations{get; set; }
-    public DbSet<Bank> Banks{ get; set; }
-    public DbSet<SystemCode> SystemCodes{ get; set; }
+    public DbSet<Department> Departments { get; set; }
+    public DbSet<Designation> Designations { get; set; }
+    public DbSet<Bank> Banks { get; set; }
+    public DbSet<SystemCode> SystemCodes { get; set; }
     public DbSet<SystemCodeDetail> SystemCodeDetails { get; set; }
     public DbSet<LeaveType> LeaveTypes { get; set; }
     public DbSet<Country> Countries { get; set; }
@@ -36,32 +36,33 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<LeaveApplication> LeaveApplications { get; set; }
     public DbSet<SystemProfile> SystemProfiles { get; set; }
     public DbSet<Audit> AuditLogs { get; set; }
-    public virtual async Task<int> SaveChangesAsync(string UserId = null)
+    public virtual async Task<int> SaveChangesAsync(string userId = null)
     {
-        OnBeforeSavingChanges(UserId);
+        OnBeforeSavingChanges(userId);
         var result = await base.SaveChangesAsync();
         return result;
     }
-    private void OnBeforeSavingChanges(string UserId)
+    private void OnBeforeSavingChanges(string userId)
     {
+        ChangeTracker.DetectChanges();
         var auditEntries = new List<AuditEntry>();
         foreach (var entry in ChangeTracker.Entries())
         {
-            if(entry.Entity is Audit || entry.State == EntityState.Deleted || entry.State == EntityState.Unchanged)
+            if (entry.Entity is Audit || entry.State == EntityState.Detached || entry.State == EntityState.Unchanged)
                 continue;
             var auditEntry = new AuditEntry(entry);
             auditEntry.TableName = entry.Entity.GetType().Name;
-            auditEntry.UserId = UserId;
+            auditEntry.UserId = userId;
             auditEntries.Add(auditEntry);
-            foreach(var property in entry.Properties)
+            foreach (var property in entry.Properties)
             {
                 string propertyName = property.Metadata.Name;
-                if(property.Metadata.IsPrimaryKey())
+                if (property.Metadata.IsPrimaryKey())
                 {
                     auditEntry.KeyValues[propertyName] = property.CurrentValue;
                     continue;
                 }
-                switch(entry.State)
+                switch (entry.State)
                 {
                     case EntityState.Added:
                         auditEntry.AuditType = AuditType.Create;
@@ -72,7 +73,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                         auditEntry.OldValues[propertyName] = property.CurrentValue;
                         break;
                     case EntityState.Modified:
-                        if(property.IsModified)
+                        if (property.IsModified)
                         {
                             auditEntry.ChangedColumns.Add(propertyName);
                             auditEntry.AuditType = AuditType.Update;
@@ -82,10 +83,10 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
                         break;
                 }
             }
-            foreach(var auditentry in auditEntries)
-            {
-                AuditLogs.Add(auditentry.ToAudit());
-            }
+        }
+        foreach (var auditentry in auditEntries)
+        {
+            AuditLogs.Add(auditentry.ToAudit());
         }
 
     }

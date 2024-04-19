@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Employee_Management_System;
 using Employee_Management_System.Data;
+using System.Security.Claims;
 
 namespace Employee_Management_System.Controllers
 {
@@ -58,8 +59,12 @@ namespace Employee_Management_System.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                leaveType.CreatedById = userid;
+                leaveType.CreatedOn = DateTime.Now;
                 _context.Add(leaveType);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(userid);
                 return RedirectToAction(nameof(Index));
             }
             return View(leaveType);
