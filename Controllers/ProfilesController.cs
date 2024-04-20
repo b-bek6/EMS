@@ -19,11 +19,14 @@ public class ProfilesController : Controller
         var tasks = new ProfileViewModel();
         var roles = await _context.Roles.OrderBy(x=>x).ToListAsync();
         ViewBag.Roles = new SelectList(roles,"Id","Name");
-        ViewBag.Tasks = await _context.SystemProfiles
+        var systemTasks = await _context.SystemProfiles
             .Include("Children.Children.Children")
             .OrderBy(x => x.Order)
-            .Where(x => x.ProfileId == null)
+            // .Where(x => x.ProfileId == null)
             .ToListAsync();
+
+        ViewBag.Tasks = new SelectList(systemTasks,"Id","Name");
+
         return View(tasks);
     }
 
@@ -38,5 +41,21 @@ public class ProfilesController : Controller
         _context.RoleProfiles.Add(roles);
         await _context.SaveChangesAsync(UserId);
         return RedirectToAction("Index");
+    }
+
+    public async Task<IActionResult> UserRights(string id)
+    {
+        var tasks = new ProfileViewModel();
+        var roles = await _context.Roles.OrderBy(x=>x).ToListAsync();
+        ViewBag.Roles = new SelectList(roles,"Id","Name");
+        var systemTasks = await _context.SystemProfiles
+            .Include("Children.Children.Children")
+            .OrderBy(x => x.Order)
+            // .Where(x => x.ProfileId == null)
+            .ToListAsync();
+
+        ViewBag.Tasks = new SelectList(systemTasks,"Id","Name");
+
+        return View(tasks);
     }
 }
