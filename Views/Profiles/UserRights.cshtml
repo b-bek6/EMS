@@ -1,20 +1,56 @@
+﻿@model Employee_Management_System.ProfileViewModel
 @{
-
+     ViewData["Title"] = "Assign User Rights";
 }
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Assign User Group Permission</a>
-</p>
 <div class="card">
     <div class="card-body ">
-        <table class="table table-bordered table-striped">
-            <thead>
+        <form asp-for="UserGroupRights">
+        <table class="table table-bordered table-hover table-fixed-header table-striped">
+            <thead class="header" style="margin: 0px auto; width: 1280px;">
                 <tr>
-                    <th>
-                        Role Number
-                    </th>
+                    <th>Role Number</th>
+                    <th>SubModule</th>
+                    <th>View</th>
+                    <th>Add</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                    <th>Approve</th>
+                    <th>Reject</th>
                 </tr>
             </thead>
+            <tbody>
+                @if(Model.Profiles != null)
+                {
+                    @foreach (var module in Model.Profiles.Where(x=>x.ProfileId is null))
+                    {
+                        <tr>
+                            <th>@module.Name</th>
+                            @if(module.Children.Any())
+                            {
+                                @foreach(var submodule in module.Children)
+                                {
+                                    <tr>
+                                        <th></th>
+                                        <td>
+                                            <input type="hidden" name="RolesProfilesIds[]" value="@submodule.Id">
+                                                @submodule.Name
+                                        </td>
+                                        <td>
+                                            <label class="">
+                                                <input type="checkbox" name="Ids[]" value="@submodule.Id">
+                                            </label>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+
+                                }
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
         </table>
+        </form>
     </div>
 </div>

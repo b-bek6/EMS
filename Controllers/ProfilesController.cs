@@ -48,13 +48,15 @@ public class ProfilesController : Controller
         var tasks = new ProfileViewModel();
         var roles = await _context.Roles.OrderBy(x=>x).ToListAsync();
         ViewBag.Roles = new SelectList(roles,"Id","Name");
-        var systemTasks = await _context.SystemProfiles
+
+        var Profiles  = await _context.SystemProfiles
+            .Include(s=>s.Profile)
             .Include("Children.Children.Children")
+            .OrderBy(x=>x.Order)
             .OrderBy(x => x.Order)
-            // .Where(x => x.ProfileId == null)
             .ToListAsync();
 
-        ViewBag.Tasks = new SelectList(systemTasks,"Id","Name");
+        tasks.RolesProfilesIds = await _context.RoleProfiles.Where(x=>x.RoleId == id).Select(r=>r.TaskId).ToListAsync();
 
         return View(tasks);
     }
