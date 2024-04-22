@@ -46,14 +46,11 @@ public class ProfilesController : Controller
     public async Task<IActionResult> UserRights(string id)
     {
         var tasks = new ProfileViewModel();
-        var roles = await _context.Roles.OrderBy(x=>x).ToListAsync();
-        ViewBag.Roles = new SelectList(roles,"Id","Name");
 
-        var Profiles  = await _context.SystemProfiles
+        tasks.Profiles  = await _context.SystemProfiles
             .Include(s=>s.Profile)
             .Include("Children.Children.Children")
             .OrderBy(x=>x.Order)
-            .OrderBy(x => x.Order)
             .ToListAsync();
 
         tasks.RolesProfilesIds = await _context.RoleProfiles.Where(x=>x.RoleId == id).Select(r=>r.TaskId).ToListAsync();

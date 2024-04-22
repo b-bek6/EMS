@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Employee_Management_System;
 using Employee_Management_System.Data;
+using System.Security.Claims;
 
 namespace EmployeeManagementSystem.Controllers
 {
@@ -61,10 +62,11 @@ namespace EmployeeManagementSystem.Controllers
         {
             // if (ModelState.IsValid)
             // {
+                 var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
                 systemProfile.CreatedById = "Bibek Ghimire";
                 systemProfile.CreatedOn = DateTime.Now;
                 _context.Add(systemProfile);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(UserId);
                 return RedirectToAction(nameof(Index));
             // }
             ViewData["ProfileId"] = new SelectList(_context.SystemProfiles, "Id", "Id", systemProfile.ProfileId);
@@ -104,8 +106,9 @@ namespace EmployeeManagementSystem.Controllers
             // {
                 try
                 {
+                    var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
                     _context.Update(systemProfile);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync(UserId);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -149,12 +152,13 @@ namespace EmployeeManagementSystem.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var systemProfile = await _context.SystemProfiles.FindAsync(id);
+            var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
             if (systemProfile != null)
             {
                 _context.SystemProfiles.Remove(systemProfile);
             }
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(UserId);
             return RedirectToAction(nameof(Index));
         }
 

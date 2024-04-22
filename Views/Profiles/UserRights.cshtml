@@ -5,11 +5,11 @@
 
 <div class="card">
     <div class="card-body ">
-        <form asp-for="UserGroupRights">
+        <form asp-action="UserGroupRights">
         <table class="table table-bordered table-hover table-fixed-header table-striped">
             <thead class="header" style="margin: 0px auto; width: 1280px;">
                 <tr>
-                    <th>Role Number</th>
+                    <th>Module</th>
                     <th>SubModule</th>
                     <th>View</th>
                     <th>Add</th>
@@ -22,7 +22,7 @@
             <tbody>
                 @if(Model.Profiles != null)
                 {
-                    @foreach (var module in Model.Profiles.Where(x=>x.ProfileId is null))
+                    @foreach (var module in Model.Profiles.Where(x=>x.ProfileId == null))
                     {
                         <tr>
                             <th>@module.Name</th>
@@ -41,7 +41,31 @@
                                                 <input type="checkbox" name="Ids[]" value="@submodule.Id">
                                             </label>
                                         </td>
-                                        <td></td>
+                                        <td>
+                                            <label class="">
+                                                <input type="checkbox" name="Ids[]" value="@submodule.Id">
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label class="">
+                                                <input type="checkbox" name="Ids[]" value="@submodule.Id">
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label class="">
+                                                <input type="checkbox" name="Ids[]" value="@submodule.Id">
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label class="">
+                                                <input type="checkbox" name="Ids[]" value="@submodule.Id">
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label class="">
+                                                <input type="checkbox" name="Ids[]" value="@submodule.Id">
+                                            </label>
+                                        </td>
                                     </tr>
 
                                 }
