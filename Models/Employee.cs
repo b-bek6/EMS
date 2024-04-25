@@ -10,12 +10,9 @@ public class Employee : UserAcitvity
     public string FullName => $"{FirstName} {MiddleName} {LastName}";
     public int PhoneNumber { get; set; }
     public string EmailAddress { get; set; }
-    public int CountryId { get; set; }
-    public Country Country { get; set; }
+    public string Country { get; set; }
     public DateTime DateOfBirth { get; set; }
     public string Address { get; set; }
-    public int DepartmentId { get; set; }
-    public Department Department { get; set; }
-    public int DesignationId { get; set; }
-    public Designation Designation { get; set; }
+    public string Department { get; set; }
+    public string Designation { get; set; }
 }

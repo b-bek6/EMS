@@ -42,7 +42,7 @@ public class ProfilesController : Controller
         await _context.SaveChangesAsync(UserId);
         return RedirectToAction("Index");
     }
-
+[HttpGet]
     public async Task<IActionResult> UserRights(string id)
     {
         var tasks = new ProfileViewModel();
@@ -53,8 +53,7 @@ public class ProfilesController : Controller
             .OrderBy(x=>x.Order)
             .ToListAsync();
 
-        tasks.RolesProfilesIds = await _context.RoleProfiles.Where(x=>x.RoleId == id).Select(r=>r.TaskId).ToListAsync();
-
+        tasks.RolesProfilesIds = await _context.RoleProfiles.Where(x=>x.RoleId == id).Select(r=>r.TaskId).ToListAsync(); 
         return View(tasks);
     }
 }
