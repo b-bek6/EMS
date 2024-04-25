@@ -160,7 +160,7 @@ namespace Employee_Management_System.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AuditLogs");
+                    b.ToTable("AuditLogs", (string)null);
                 });
 
             modelBuilder.Entity("Employee_Management_System.Bank", b =>
@@ -185,7 +185,7 @@ namespace Employee_Management_System.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Banks");
+                    b.ToTable("Banks", (string)null);
                 });
 
             modelBuilder.Entity("Employee_Management_System.City", b =>
@@ -211,7 +211,7 @@ namespace Employee_Management_System.Data.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("Employee_Management_System.Country", b =>
@@ -244,7 +244,7 @@ namespace Employee_Management_System.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", (string)null);
                 });
 
             modelBuilder.Entity("Employee_Management_System.Department", b =>
@@ -277,7 +277,7 @@ namespace Employee_Management_System.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
                 });
 
             modelBuilder.Entity("Employee_Management_System.Designation", b =>
@@ -310,7 +310,7 @@ namespace Employee_Management_System.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Designations");
+                    b.ToTable("Designations", (string)null);
                 });
 
             modelBuilder.Entity("Employee_Management_System.Employee", b =>
@@ -376,7 +376,7 @@ namespace Employee_Management_System.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("Employee_Management_System.LeaveApplication", b =>
@@ -446,7 +446,7 @@ namespace Employee_Management_System.Data.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("LeaveApplications");
+                    b.ToTable("LeaveApplications", (string)null);
                 });
 
             modelBuilder.Entity("Employee_Management_System.LeaveType", b =>
@@ -479,7 +479,7 @@ namespace Employee_Management_System.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LeaveTypes");
+                    b.ToTable("LeaveTypes", (string)null);
                 });
 
             modelBuilder.Entity("Employee_Management_System.RoleProfile", b =>
@@ -503,7 +503,7 @@ namespace Employee_Management_System.Data.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("RoleProfiles");
+                    b.ToTable("RoleProfiles", (string)null);
                 });
 
             modelBuilder.Entity("Employee_Management_System.SystemCode", b =>
@@ -536,7 +536,7 @@ namespace Employee_Management_System.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SystemCodes");
+                    b.ToTable("SystemCodes", (string)null);
                 });
 
             modelBuilder.Entity("Employee_Management_System.SystemCodeDetail", b =>
@@ -577,7 +577,7 @@ namespace Employee_Management_System.Data.Migrations
 
                     b.HasIndex("SystemCodeId");
 
-                    b.ToTable("SystemCodeDetails");
+                    b.ToTable("SystemCodeDetails", (string)null);
                 });
 
             modelBuilder.Entity("Employee_Management_System.SystemProfile", b =>
@@ -614,7 +614,7 @@ namespace Employee_Management_System.Data.Migrations
 
                     b.HasIndex("ProfileId");
 
-                    b.ToTable("SystemProfiles");
+                    b.ToTable("SystemProfiles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

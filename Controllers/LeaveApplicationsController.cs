@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Employee_Management_System;
 using Employee_Management_System.Data;
+using System.Security.Claims;
 
 namespace Employee_Management_System.Controllers
 {
@@ -117,7 +118,6 @@ namespace Employee_Management_System.Controllers
         public async Task<IActionResult> ApproveLeave(int? id,LeaveApplication leave)
         {
             var approvedStatus = _context.SystemCodeDetails.Include(x => x.SystemCode).Where(y => y.SystemCode.Code == "LeaveApprovalStatus" && y.Code == "Approved").FirstOrDefault();
-
             var leaveApplication = await _context.LeaveApplications
                 .Include(l=>l.Duration)
                 .Include(l=> l.Employee)
@@ -130,12 +130,13 @@ namespace Employee_Management_System.Controllers
                 return NotFound();
             }
 
+            var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
             leaveApplication.ApprovedOn = DateTime.Now;
             leaveApplication.ApprovedById = "Bibek Ghimire";
             leaveApplication.StatusId = approvedStatus.Id;
             leaveApplication.ApprovalNotes = leave.ApprovalNotes;
             _context.Update(leaveApplication);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(UserId);
             return RedirectToAction(nameof(Index));
 
 
