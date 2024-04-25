@@ -1,91 +1,70 @@
 ﻿@model Employee_Management_System.ProfileViewModel
 @{
-     ViewData["Title"] = "Assign User Rights";
+    ViewData["Title"] = "Assign User Rights";
 }
 
 <div class="card">
     <div class="card-body ">
-        <form asp-action="UserGroupRights" method="post" >
+        <form asp-action="UserGroupRights" method="post">
             <input type="hidden" name="Id" value="@Model.RoleId">
-        <table class="table table-bordered table-hover table-fixed-header table-striped">
-            <thead class="header" style="margin: 0px auto; width: 1280px;">
-                <tr>
-                    <th>Module</th>
-                    <th>SubModule</th>
-                    <th>View</th>
-                    <th>Add</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                    <th>Approve</th>
-                    <th>Reject</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if(Model.Profiles != null)
-                {
-                    @foreach (var module in Model.Profiles.Where(x=>x.ProfileId == null))
+            <table class="table table-bordered table-hover table-fixed-header table-striped">
+                <thead class="header" style="margin: 0px auto; width: 1280px;">
+                    <tr>
+                        <th>Module</th>
+                        <th>SubModule</th>
+                        <th>Actions</th>
+                        <th>Assign Rights</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Profiles != null)
                     {
-                        <tr>
-                            <th>@module.Name</th>
-                            @if(module.Children.Any())
-                            {
-                                @foreach(var submodule in module.Children)
+                        @foreach (var module in Model.Profiles.Where(x => x.ProfileId == null))
+                        {
+                            <tr>
+                                <th>@module.Name</th>
+                                @if (module.Children.Any())
                                 {
+                                    @foreach (var submodule in module.Children)
+                                    {
                                     <tr>
                                         <th></th>
-                                        <td>
+                                        <th>
                                             <input type="hidden" name="RolesProfilesIds[]" value="@submodule.Id">
                                                 @submodule.Name
-                                        </td>
-                                        <td>
-                                            <label class="">
-                                                <input type="checkbox" name="Ids[]" value="@submodule.Id">
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <label class="">
-                                                <input type="checkbox" name="Ids[]" value="@submodule.Id">
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <label class="">
-                                                <input type="checkbox" name="Ids[]" value="@submodule.Id">
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <label class="">
-                                                <input type="checkbox" name="Ids[]" value="@submodule.Id">
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <label class="">
-                                                <input type="checkbox" name="Ids[]" value="@submodule.Id">
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <label class="">
-                                                <input type="checkbox" name="Ids[]" value="@submodule.Id">
-                                            </label>
-                                        </td>
+                                        </th>
                                     </tr>
+                                        @foreach (var actions in submodule.Children)
+                                        {
 
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <td>@actions.Name</td>
+                                            <td>
+                                                <label class="">
+                                                    <input type="checkbox" name="Ids[]" value="@actions.Id">
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        }
+                                    }
                                 }
-                            }
-                        </tr>
+                            </tr>
+                        }
                     }
-                }
-            </tbody>
-        </table>
-        <div class="form-group">
-            <div class="col-md-12">
-                <div class="card-footer">
-                    <div class="clearfix ">
-                        <a asp-action="Index" class="btn btn-danger push-left">Back To List</a>
-                        <input type="submit" value="Assign Rights" class="btn btn-primary">
+                </tbody>
+            </table>
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="card-footer">
+                        <div class="clearfix ">
+                            <a asp-action="Index" class="btn btn-danger push-left">Back To List</a>
+                            <input type="submit" value="Assign Rights" class="btn btn-primary">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         </form>
     </div>
 </div>
