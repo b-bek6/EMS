@@ -46,7 +46,7 @@ public class ProfilesController : Controller
     public async Task<IActionResult> UserRights(string id)
     {
         var tasks = new ProfileViewModel();
-
+        tasks.RoleId = id;
         tasks.Profiles  = await _context.SystemProfiles
             .Include(s=>s.Profile)
             .Include("Children.Children.Children")
@@ -55,5 +55,22 @@ public class ProfilesController : Controller
 
         tasks.RolesProfilesIds = await _context.RoleProfiles.Where(x=>x.RoleId == id).Select(r=>r.TaskId).ToListAsync(); 
         return View(tasks);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> UserGroupRights(string id, ProfileViewModel vm)
+    {
+        var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        foreach(var taskId in vm.Ids)
+        {
+            var roles = new RoleProfile
+            {
+                TaskId = taskId,
+                RoleId = id,
+            };
+            _context.RoleProfiles.Add(roles);
+            await _context.SaveChangesAsync(UserId);
+        }
+        return RedirectToAction("Index");
     }
 }

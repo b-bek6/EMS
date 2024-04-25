@@ -5,7 +5,8 @@
 
 <div class="card">
     <div class="card-body ">
-        <form asp-action="UserGroupRights">
+        <form asp-action="UserGroupRights" method="post" >
+            <input type="hidden" name="Id" value="@Model.RoleId">
         <table class="table table-bordered table-hover table-fixed-header table-striped">
             <thead class="header" style="margin: 0px auto; width: 1280px;">
                 <tr>
