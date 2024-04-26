@@ -46,11 +46,16 @@ namespace Employee_Management_System.Controllers
         // GET: Employee/Create
         public IActionResult Create()
         {
+
+            ViewData["GenderId"] = new SelectList(_context.SystemCodeDetails.Include(x=>x.SystemCode).Where(x=>x.SystemCode.Code=="Gender"), "Id", "Description");
+            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name");
+            ViewData["DesignationId"] = new SelectList(_context.Designations, "Id", "Name");
+            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Name");
             return View();
         }
 
         // POST: Employee/Create
-         // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -64,6 +69,10 @@ namespace Employee_Management_System.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["GenderId"] = new SelectList(_context.SystemCodeDetails.Include(x=>x.SystemCode).Where(x=>x.SystemCode.Code=="Gender"), "Id", "Description",employee.GenderId);
+            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name",employee.CountryId);
+            ViewData["DesignationId"] = new SelectList(_context.Designations, "Id", "Name",employee.DesignationId);
+            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Name",employee.DepartmentId);
             return View(employee);
         }
 
@@ -115,6 +124,10 @@ namespace Employee_Management_System.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+                        ViewData["GenderId"] = new SelectList(_context.SystemCodeDetails.Include(x=>x.SystemCode).Where(x=>x.SystemCode.Code=="Gender"), "Id", "Description",employee.GenderId);
+            ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Name",employee.CountryId);
+            ViewData["DesignationId"] = new SelectList(_context.Designations, "Id", "Name",employee.DesignationId);
+            ViewData["DepartmentId"] = new SelectList(_context.Departments, "Id", "Name",employee.DepartmentId);
             return View(employee);
         }
 
