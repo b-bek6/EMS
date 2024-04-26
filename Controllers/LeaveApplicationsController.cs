@@ -24,11 +24,19 @@ namespace Employee_Management_System.Controllers
         public async Task<IActionResult> Index()
         {
             // add awaiting status table in only index html
-            var applicationDbContext = _context.LeaveApplications.Include(l => l.Duration).Include(l => l.Employee).Include(l => l.LeaveType).Include(l => l.Status);
+            // var applicationDbContext = _context.LeaveApplications.Include(l => l.Duration).Include(l => l.Employee).Include(l => l.LeaveType).Include(l => l.Status);
+            var approvedStatus =  _context.SystemCodeDetails.Include(x => x.SystemCode).Where(y => y.SystemCode.Code == "LeaveApprovalStatus" && y.Code =="Pending").FirstOrDefault();
+            var applicationDbContext = _context.LeaveApplications
+            .Include(l => l.Duration)
+            .Include(l => l.Employee)
+            .Include(l => l.LeaveType)
+            .Include(l => l.Status)
+            .Where(l => l.StatusId == approvedStatus!.Id);
             return View(await applicationDbContext.ToListAsync());
         }
         public async Task<IActionResult> ApprovedLeaveApplications()
         {
+
             var approvedStatus =  _context.SystemCodeDetails.Include(x => x.SystemCode).Where(y => y.SystemCode.Code == "LeaveApprovalStatus" && y.Code =="Approved").FirstOrDefault();
             var applicationDbContext = _context.LeaveApplications
             .Include(l => l.Duration)
@@ -137,7 +145,7 @@ namespace Employee_Management_System.Controllers
             leaveApplication.ApprovalNotes = leave.ApprovalNotes;
             _context.Update(leaveApplication);
             await _context.SaveChangesAsync(UserId);
-            return RedirectToAction(nameof(Index));
+            // return RedirectToAction(nameof(Index));
 
 
             ViewData["DurationId"] = new SelectList(_context.SystemCodeDetails.Include(x => x.SystemCode).Where(y => y.SystemCode.Code == "LeaveDuration"), "Id", "Duration", leaveApplication.DurationId);
