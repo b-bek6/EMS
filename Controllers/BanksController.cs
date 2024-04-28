@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Employee_Management_System;
 using Employee_Management_System.Data;
+using System.Security.Claims;
 
 namespace Employee_Management_System.Controllers
 {
@@ -54,15 +55,13 @@ namespace Employee_Management_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Code,Name,AccountNo")] Bank bank)
+        public async Task<IActionResult> Create(Bank bank)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(bank);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(bank);
+            var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            _context.Add(bank);
+            await _context.SaveChangesAsync(UserId);
+            return RedirectToAction(nameof(Index));
+
         }
 
         // GET: Banks/Edit/5
@@ -86,19 +85,18 @@ namespace Employee_Management_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Code,Name,AccountNo")] Bank bank)
+        public async Task<IActionResult> Edit(int id, Bank bank)
         {
             if (id != bank.Id)
             {
                 return NotFound();
             }
+            var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     _context.Update(bank);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync(UserId);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -112,7 +110,7 @@ namespace Employee_Management_System.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
+
             return View(bank);
         }
 

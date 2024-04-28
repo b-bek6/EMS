@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Employee_Management_System;
 using Employee_Management_System.Data;
+using System.Security.Claims;
 
 namespace Employee_Management_System.Controllers
 {
@@ -54,14 +55,14 @@ namespace Employee_Management_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Code,Description,CreatedById,CreatedOn,ModifiedById,ModifiedOn")] SystemCode systemCode)
+        public async Task<IActionResult> Create(SystemCode systemCode)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(systemCode);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+            var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            systemCode.CreatedOn = DateTime.Now;
+            systemCode.CreatedById = UserId;
+            _context.Add(systemCode);
+            await _context.SaveChangesAsync(UserId);
+            return RedirectToAction(nameof(Index));
             return View(systemCode);
         }
 
@@ -86,33 +87,34 @@ namespace Employee_Management_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Code,Description,CreatedById,CreatedOn,ModifiedById,ModifiedOn")] SystemCode systemCode)
+        public async Task<IActionResult> Edit(int id, SystemCode systemCode)
         {
             if (id != systemCode.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            systemCode.ModifiedOn = DateTime.Now;
+            systemCode.ModifiedById = UserId;
+            try
             {
-                try
-                {
-                    _context.Update(systemCode);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SystemCodeExists(systemCode.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _context.Update(systemCode);
+                await _context.SaveChangesAsync(UserId);
             }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!SystemCodeExists(systemCode.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+
             return View(systemCode);
         }
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Employee_Management_System;
 using Employee_Management_System.Data;
+using System.Security.Claims;
 
 namespace Employee_Management_System.Controllers
 {
@@ -57,14 +58,13 @@ namespace Employee_Management_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Code,Name,CountryId")] City city)
+        public async Task<IActionResult> Create( City city)
         {
-            if (ModelState.IsValid)
-            {
+            var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 _context.Add(city);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(UserId);
                 return RedirectToAction(nameof(Index));
-            }
+
             ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Id", city.CountryId);
             return View(city);
         }
@@ -91,19 +91,19 @@ namespace Employee_Management_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Code,Name,CountryId")] City city)
+        public async Task<IActionResult> Edit(int id, City city)
         {
             if (id != city.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+           var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+         
                 try
                 {
                     _context.Update(city);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync(UserId);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,7 +117,7 @@ namespace Employee_Management_System.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
+
             ViewData["CountryId"] = new SelectList(_context.Countries, "Id", "Id", city.CountryId);
             return View(city);
         }

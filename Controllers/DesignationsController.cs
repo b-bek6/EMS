@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Employee_Management_System;
 using Employee_Management_System.Data;
+using System.Security.Claims;
 
 namespace Employee_Management_System.Controllers
 {
@@ -54,12 +55,15 @@ namespace Employee_Management_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Code,Name,CreatedById,CreatedOn,ModifiedById,ModifiedOn")] Designation designation)
+        public async Task<IActionResult> Create(Designation designation)
         {
+            var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            designation.CreatedById = UserId;
+            designation.CreatedOn = DateTime.Now;
             if (ModelState.IsValid)
             {
                 _context.Add(designation);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(UserId);
                 return RedirectToAction(nameof(Index));
             }
             return View(designation);
@@ -86,7 +90,7 @@ namespace Employee_Management_System.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Code,Name,CreatedById,CreatedOn,ModifiedById,ModifiedOn")] Designation designation)
+        public async Task<IActionResult> Edit(int id, Designation designation)
         {
             if (id != designation.Id)
             {
@@ -95,10 +99,14 @@ namespace Employee_Management_System.Controllers
 
             if (ModelState.IsValid)
             {
+                var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                designation.ModifiedById = UserId;
+                designation.ModifiedOn = DateTime.Now;
+
                 try
                 {
                     _context.Update(designation);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync(UserId);
                 }
                 catch (DbUpdateConcurrencyException)
                 {

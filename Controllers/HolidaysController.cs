@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Employee_Management_System;
 using Employee_Management_System.Data;
+using System.Security.Claims;
 
-namespace EmployeeManagementSystem.Controller
+namespace EmployeeManagementSystem.Controllers
 {
     public class HolidaysController : Controller
     {
@@ -54,14 +55,17 @@ namespace EmployeeManagementSystem.Controller
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,StartDate,EndDate,Description,CreatedById,CreatedOn,ModifiedById,ModifiedOn")] Holiday holiday)
+        public async Task<IActionResult> Create(Holiday holiday)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(holiday);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+            var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            holiday.CreatedById = UserId;
+            holiday.CreatedOn = DateTime.Now;
+
+
+            _context.Add(holiday);
+            await _context.SaveChangesAsync(UserId);
+            return RedirectToAction(nameof(Index));
+
             return View(holiday);
         }
 
@@ -86,33 +90,33 @@ namespace EmployeeManagementSystem.Controller
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,StartDate,EndDate,Description,CreatedById,CreatedOn,ModifiedById,ModifiedOn")] Holiday holiday)
+        public async Task<IActionResult> Edit(int id, Holiday holiday)
         {
             if (id != holiday.Id)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            var UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            holiday.ModifiedById = UserId;
+            holiday.ModifiedOn = DateTime.Now;
+            try
             {
-                try
-                {
-                    _context.Update(holiday);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!HolidayExists(holiday.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _context.Update(holiday);
+                await _context.SaveChangesAsync(UserId);
             }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!HolidayExists(holiday.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+
             return View(holiday);
         }
 
